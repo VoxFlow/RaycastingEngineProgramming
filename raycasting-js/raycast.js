@@ -128,7 +128,7 @@ class Ray {
         yintercept += this.isRayFacingDown ? TILE_SIZE : 0;
         // find x-coord of closest horizontal grid intersection
         xintercept =
-            player.x + (yintercept - player.y) / Math.tan(rayAngle);
+            player.x + (yintercept - player.y) / Math.tan(this.rayAngle);
 
         // calculate the increment xstep and ystep
         ystep = TILE_SIZE;
