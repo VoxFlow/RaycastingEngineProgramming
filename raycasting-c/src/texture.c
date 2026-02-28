@@ -1,21 +1,24 @@
 #include "texture.h"
 #include <stdio.h>
 
+upng_t *textures[NUM_TEXTURES];
+
 static const char *texturesFileNames[NUM_TEXTURES] = {
     "./src/images/redbrick.png",
     "./src/images/purplestone.png",
     "./src/images/mossystone.png",
     "./src/images/graystone.png",
-    "./src/images/colorstone.png", // 5
-    "./src/images/bluestone.png",
+    "./src/images/colorstone.png", 
+    "./src/images/bluestone.png", //5
     "./src/images/wood.png",
-    "./src/images/pikuma.png",
     "./src/images/eagle.png",
-    "./src/images/armor.png", // 10
-    "./src/images/barrel.png",
+    "./src/images/pikuma.png",
+    "./src/images/barrel.png", 
+    "./src/images/light.png", //10
+    "./src/images/table.png",
     "./src/images/guard.png",
-    "./src/images/light.png",
-    "./src/images/table.png"};
+    "./src/images/armor.png"
+};
 
 void loadTextures(void)
 {
@@ -41,7 +44,7 @@ void loadTextures(void)
     }
 }
 
-void freeTextures()
+void freeTextures(void)
 {
     for (int i = 0; i < NUM_TEXTURES; i++)
     {

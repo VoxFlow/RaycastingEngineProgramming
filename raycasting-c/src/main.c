@@ -8,6 +8,7 @@
 #include "player.h"
 #include "ray.h"
 #include "wall.h"
+#include "sprite.h"
 #include "texture.h"
 
 bool isGameRunning = false;
@@ -79,9 +80,11 @@ void render(void)
     clearColorBuffer(0xFF000000);
 
     renderWallProjection();
+    renderSpriteProjection();
     
     renderMapGrid();
     renderMapRays();
+    renderMapSprites();
     renderMapPlayer();
 
     renderColorBuffer();

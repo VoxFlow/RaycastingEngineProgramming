@@ -15,9 +15,9 @@ typedef struct
     upng_t *upngTexture;
 } texture_t;
 
-upng_t *textures[NUM_TEXTURES];
+extern upng_t *textures[NUM_TEXTURES];
 
-void loadTextures();
-void freeTextures();
+void loadTextures(void);
+void freeTextures(void);
 
 #endif

@@ -15,18 +15,16 @@ void renderWallProjection(void)
     for (int x = 0; x < NUM_RAYS; x++)
     {
         float perpDistance = rays[x].distance * cos(rays[x].rayAngle - player.rotationAngle);
-        float projectedWallHeight = (TILE_SIZE / perpDistance) * DIST_PROJ_PLANE;
+        float wallHeight = (TILE_SIZE / perpDistance) * DIST_PROJ_PLANE;
 
-        int wallStripHeight = (int)projectedWallHeight;
+        int wallTopY = (WINDOW_HEIGHT / 2) - (wallHeight / 2);
+        wallTopY = wallTopY < 0 ? 0 : wallTopY;
 
-        int wallTopPixel = (WINDOW_HEIGHT / 2) - (wallStripHeight / 2);
-        wallTopPixel = wallTopPixel < 0 ? 0 : wallTopPixel;
-
-        int wallBottomPixel = (WINDOW_HEIGHT / 2) + (wallStripHeight / 2);
-        wallBottomPixel = wallBottomPixel > WINDOW_HEIGHT ? WINDOW_HEIGHT : wallBottomPixel;
+        int wallBottomY = (WINDOW_HEIGHT / 2) + (wallHeight / 2);
+        wallBottomY = wallBottomY > WINDOW_HEIGHT ? WINDOW_HEIGHT : wallBottomY;
 
         // Ceiling
-        for (int y = 0; y < wallTopPixel; y++)
+        for (int y = 0; y < wallTopY; y++)
         {
             drawPixel(x, y, 0xFF444444);
         }
@@ -42,17 +40,17 @@ void renderWallProjection(void)
         }
 
         // Wall
-        int texNum = rays[x].wallHitContent - 1;
+        int texNum = rays[x].texture - 1;
 
         int textureWidth = upng_get_width(textures[texNum]);
         int textureHeight = upng_get_height(textures[texNum]);
 
-        for (int y = wallTopPixel; y < wallBottomPixel; y++)
+        for (int y = wallTopY; y < wallBottomY; y++)
         {
-            int distanceFromTop = y + (wallStripHeight / 2) - (WINDOW_HEIGHT / 2);
-            int textureOffsetY = distanceFromTop * ((float)textureHeight / wallStripHeight);
+            int distanceFromTop = y + (wallHeight / 2) - (WINDOW_HEIGHT / 2);
+            int textureOffsetY = distanceFromTop * ((float)textureHeight / wallHeight);
 
-            color_t* wallTextureBuffer = (color_t*)(textures[texNum]);
+            color_t* wallTextureBuffer = (color_t*)upng_get_buffer(textures[texNum]);
             color_t texelColor = wallTextureBuffer[(textureWidth * textureOffsetY) + textureOffsetX];
 
             if (rays[x].wasHitVertical)
@@ -64,7 +62,7 @@ void renderWallProjection(void)
         }
 
         // Floor
-        for (int y = wallBottomPixel; y < WINDOW_HEIGHT; y++)
+        for (int y = wallBottomY; y < WINDOW_HEIGHT; y++)
         {
             drawPixel(x, y, 0xFF888888);
         }
