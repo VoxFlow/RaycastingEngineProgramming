@@ -31,7 +31,7 @@ bool initializeWindow(void)
         return false;
     }
 
-    renderer = SDL_CreateRenderer(window, -1, 0);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!renderer)
     {
         fprintf(stderr, "Erorr creating SDL renderer\n");
@@ -46,9 +46,8 @@ bool initializeWindow(void)
         SDL_PIXELFORMAT_RGBA32,
         SDL_TEXTUREACCESS_STREAMING,
         WINDOW_WIDTH,
-        WINDOW_HEIGHT
-    );
-    
+        WINDOW_HEIGHT);
+
     return true;
 }
 
@@ -75,25 +74,29 @@ void renderColorBuffer(void)
         colorBufferTexture,
         NULL,
         colorBuffer,
-        (int)(WINDOW_WIDTH * sizeof(color_t))
-    );
+        (int)(WINDOW_WIDTH * sizeof(color_t)));
     SDL_RenderCopy(renderer, colorBufferTexture, NULL, NULL);
     SDL_RenderPresent(renderer);
 }
 
-void drawPixel(int x, int y, color_t color) {
+void drawPixel(int x, int y, color_t color)
+{
     colorBuffer[(WINDOW_WIDTH * y) + x] = color;
 }
 
-void drawRect(int x, int y, int width, int height, color_t color) {
-    for (int i = x; i <= (x + width); i++) {
-        for (int j = y; j <= (y + height); j++) {
+void drawRect(int x, int y, int width, int height, color_t color)
+{
+    for (int i = x; i <= (x + width); i++)
+    {
+        for (int j = y; j <= (y + height); j++)
+        {
             drawPixel(i, j, color);
         }
     }
 }
 
-void drawLine(int x0, int y0, int x1, int y1, color_t color) {
+void drawLine(int x0, int y0, int x1, int y1, color_t color)
+{
     int deltaX = (x1 - x0);
     int deltaY = (y1 - y0);
 
@@ -105,9 +108,10 @@ void drawLine(int x0, int y0, int x1, int y1, color_t color) {
     float currentX = x0;
     float currentY = y0;
 
-    for (int i = 0; i < longestSideLength; i++) {
+    for (int i = 0; i < longestSideLength; i++)
+    {
         drawPixel(round(currentX), (int)round(currentY), color);
         currentX += xIncrement;
         currentY += yIncrement;
-    } 
+    }
 }
